@@ -2,19 +2,25 @@ import TableHead from "./table-head";
 import TablePagination from "./table-pagingation";
 import TableRow from "./table-row";
 
-type DataTableProps = {
-  data: Array<Record<string, string> & { id: string | number }>;
+export type DataTableProps<
+  T extends Record<string, string> & { id: string } = { id: string }
+> = {
+  data: T[];
   pageSize?: number;
   page: number;
   onPageChange: (page: number) => void;
+  onSortChange: (key: keyof T) => void;
 };
 
-function DataTable({
+function DataTable<
+  T extends Record<string, string> & { id: string } = { id: string }
+>({
   data,
   pageSize = 10,
   page,
   onPageChange,
-}: DataTableProps) {
+  onSortChange,
+}: DataTableProps<T>) {
   const onNextPage = () => {
     onPageChange(page < data.length - 1 ? page + 1 : page);
   };
@@ -25,7 +31,10 @@ function DataTable({
     <div className="flex flex-col gap-4">
       <table>
         <thead>
-          <TableHead columnDef={Object.keys(data[0])} />
+          <TableHead
+            columnDef={Object.keys(data[0]) as Array<keyof (typeof data)[0]>}
+            onColumnClick={onSortChange}
+          />
         </thead>
         <tbody>
           {data.slice((page - 1) * pageSize, page * pageSize).map((item) => (
