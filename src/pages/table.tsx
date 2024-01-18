@@ -63,7 +63,7 @@ function Table() {
   };
 
   return (
-    <>
+    <div className="max-w-4xl m-auto">
       <input
         className="w-full p-2 border border-gray-300 rounded-md"
         onChange={handleFilterChange}
@@ -75,7 +75,7 @@ function Table() {
         onPageChange={handlePageChange}
         onSortChange={handleSortChange}
       />
-    </>
+    </div>
   );
 }
 
